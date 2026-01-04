@@ -1,0 +1,119 @@
+###
+GET :  method of is used to fetch the data form the fastapi sever 
+       not used to modify the data 
+        mainly used to retrive the data ;;;
+ 
+ use : : @app.get("/")
+            def function():
+                return 
+
+
+
+
+## 
+mnaully created on list of dict in python and now we have to return it to the frontend 
+using the APIs; (mockdata.python)
+
+use : 
+from mockdata import products  === > here the mockdata is python file and there i have sotred the list of products which is the list of dict ;
+@app.get("/products")
+
+def products_list():
+    return products
+
+
+
+dynamic query if we pass the id or count then it will return that perticuler key value pair 
+basicly the info it will return  (THIS IS CALLED path PARAM)
+WE ARE SEND THE PARAMERTERS FORM TEH URL THAT IS QUERY TO THE BACK AND THEN FETCH ACCORIND TO IT 
+
+
+
+@app.get("/products/{count}")
+def product_detail(count: int):
+    for i in products:
+        if i["count"] == count:
+            return i
+    return {"error": "Product not found"}    
+
+
+here we collect the count varible form teh url of use and then pass it thorught the if (condition){
+    if that perticluler count is present in our key value pair then it will reutnr the key value pair to the 
+    webpage 8*** 
+}
+
+
+
+LET'S NOW SEE THE  query param 
+
+localhost:800/greeting?name=pruthvi
+
+
+@app.get("/greet")
+def greet(name:str,age:int):
+    return {"message":f"hello, {name}! you are {age} years old."}
+
+    we can give also the mulitple param also using the ?name=pruthvi & age = 10 
+    in url then it's considered as the multiple param pass thorught url 
+
+
+when the you have fixed number of param then use query parametrs like this 
+greet/{variable1}/{variable2} 
+so here we have to pass them two varilbe max and mainly
+
+but when it comes to query param we can pass any number of them witout any problem 
+def greet(name:str,age:int):
+
+
+now it's okey for using for two varilbe three varilbe but when it comes to the large number of variables 
+then there is coept comes that thats called requst 
+
+REQuest
+form fastapi import Request 
+
+@app.get("/greeting/")
+def greet(request:Request):
+return "something"
+
+
+@app.get("/greet")
+def greet(req:Request):
+    return {"message":f"hello , {req.query_params['name']}! you are {req.query_params['age']} years old."}
+
+we can create the req object by using the Request
+and then use can use the varible name that pass the query to and then primt them 
+
+
+let's learng Http methods in fastapi
+
+GET ,PUT , Post , delete
+
+
+1.GET
+in this the clint is used to ask the server and server responese to that request 
+that is the GET request how it works 
+1.  client == > server  first the client ask the info and then the server resonedd to the client 
+1.2 client <== server 
+
+to get something from server 
+
+2.POST 
+here we send teh data throught clinet 
+and the server is used to store the data in database so 
+server also have one conenction between the database 
+also the server is also reutrn the one confirmation response to the client 
+
+
+3.put 
+ this method put methdo is used when we have to update the data of server,database 
+ 
+ here we send the (data,data_id) which data will be updated taht have data_id   
+
+ 4. delete
+
+ cleint says i want to dleete teh data and send use the dataid 
+
+ (Delete , data_id)
+
+ this is CRUD all this 4 , all the applcaiton are workingon the crud methods 
+ 
