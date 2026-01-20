@@ -1,119 +1,249 @@
-###
-GET :  method of is used to fetch the data form the fastapi sever 
-       not used to modify the data 
-        mainly used to retrive the data ;;;
- 
- use : : @app.get("/")
-            def function():
-                return 
+GET Method
+
+GET method is used to fetch data from the FastAPI server.
+It is not used to modify data.
+Mainly used to retrieve data.
+
+Use:
+
+@app.get("/")
+def function():
+    return
+
+Returning Mock Data (List of Dict) to Frontend
+
+Manually created a list of dictionaries in Python, and now we want to return it to the frontend using APIs (mockdata.py).
+
+Use:
+
+from mockdata import products
 
 
+Here, mockdata is a Python file, and inside it we stored products, which is a list of dictionaries.
 
-
-## 
-mnaully created on list of dict in python and now we have to return it to the frontend 
-using the APIs; (mockdata.python)
-
-use : 
-from mockdata import products  === > here the mockdata is python file and there i have sotred the list of products which is the list of dict ;
 @app.get("/products")
-
 def products_list():
     return products
 
+Dynamic Path Parameter
 
+If we pass an id or count, it will return that particular key-value pair.
+Basically, it returns specific information.
 
-dynamic query if we pass the id or count then it will return that perticuler key value pair 
-basicly the info it will return  (THIS IS CALLED path PARAM)
-WE ARE SEND THE PARAMERTERS FORM TEH URL THAT IS QUERY TO THE BACK AND THEN FETCH ACCORIND TO IT 
-
-
+👉 This is called a Path Parameter
+We send parameters from the URL to the backend, then fetch data according to it.
 
 @app.get("/products/{count}")
 def product_detail(count: int):
     for i in products:
         if i["count"] == count:
             return i
-    return {"error": "Product not found"}    
+    return {"error": "Product not found"}
 
 
-here we collect the count varible form teh url of use and then pass it thorught the if (condition){
-    if that perticluler count is present in our key value pair then it will reutnr the key value pair to the 
-    webpage 8*** 
-}
+Here we collect the count variable from the URL and pass it through an if condition.
 
+If that particular count is present in the key-value pair, then it will return that data to the webpage.
 
+Query Parameters
 
-LET'S NOW SEE THE  query param 
+Example URL:
 
-localhost:800/greeting?name=pruthvi
-
+localhost:8000/greeting?name=pruthvi
 
 @app.get("/greet")
-def greet(name:str,age:int):
-    return {"message":f"hello, {name}! you are {age} years old."}
-
-    we can give also the mulitple param also using the ?name=pruthvi & age = 10 
-    in url then it's considered as the multiple param pass thorught url 
+def greet(name: str, age: int):
+    return {"message": f"hello, {name}! you are {age} years old."}
 
 
-when the you have fixed number of param then use query parametrs like this 
-greet/{variable1}/{variable2} 
-so here we have to pass them two varilbe max and mainly
+We can also pass multiple parameters using:
 
-but when it comes to query param we can pass any number of them witout any problem 
-def greet(name:str,age:int):
+?name=pruthvi&age=10
 
 
-now it's okey for using for two varilbe three varilbe but when it comes to the large number of variables 
-then there is coept comes that thats called requst 
+So multiple values can be passed through the URL easily.
 
-REQuest
-form fastapi import Request 
+Path Param vs Query Param
 
-@app.get("/greeting/")
-def greet(request:Request):
-return "something"
+When you have a fixed number of parameters, use path parameters like:
 
+greet/{variable1}/{variable2}
+
+
+Here we must pass both variables strictly.
+
+But when it comes to query parameters, we can pass any number of parameters without any problem:
+
+def greet(name: str, age: int):
+
+
+This is okay for 2–3 variables, but when the number of variables increases, a new concept comes in.
+
+Request Object
+
+When there are many query parameters, we use Request.
+
+from fastapi import Request
+
+http://127.0.0.1:8000/add?a=3&b=5
+foramt above for passing the varibalbe 
 
 @app.get("/greet")
-def greet(req:Request):
-    return {"message":f"hello , {req.query_params['name']}! you are {req.query_params['age']} years old."}
-
-we can create the req object by using the Request
-and then use can use the varible name that pass the query to and then primt them 
-
-
-let's learng Http methods in fastapi
-
-GET ,PUT , Post , delete
+def greet(req: Request):
+    return {
+        "message": f"hello, {req.query_params['name']}! you are {req.query_params['age']} years old."
+    }
 
 
-1.GET
-in this the clint is used to ask the server and server responese to that request 
-that is the GET request how it works 
-1.  client == > server  first the client ask the info and then the server resonedd to the client 
-1.2 client <== server 
+We create the req object using Request,
+then access the query parameters using their names.
 
-to get something from server 
+HTTP Methods in FastAPI
 
-2.POST 
-here we send teh data throught clinet 
-and the server is used to store the data in database so 
-server also have one conenction between the database 
-also the server is also reutrn the one confirmation response to the client 
+GET, POST, PUT, DELETE
+
+1. GET
+
+Client requests data from the server, and the server responds.
+
+Flow:
+
+client  ==>  server
+client  <==  server
 
 
-3.put 
- this method put methdo is used when we have to update the data of server,database 
- 
- here we send the (data,data_id) which data will be updated taht have data_id   
+Used to get data from server.
 
- 4. delete
+2. POST
 
- cleint says i want to dleete teh data and send use the dataid 
+Client sends data to the server.
+Server stores the data in the database.
 
- (Delete , data_id)
+Server also sends a confirmation response back to the client.
 
- this is CRUD all this 4 , all the applcaiton are workingon the crud methods 
- 
+3. PUT
+
+Used to update existing data in server/database.
+
+Client sends:
+
+(data, data_id)
+
+
+So the server knows which data to update.
+
+4. DELETE
+
+Client requests to delete data by sending the data_id.
+
+(Delete, data_id)
+
+CRUD
+
+These four methods together are called CRUD:
+
+Create → POST
+
+Read → GET
+
+Update → PUT
+
+Delete → DELETE
+
+Almost all applications work on these CRUD operations.
+
+
+
+
+## The Database setup using the postgres sql and sqlalcamy of python for this 
+we have first create evn file of database connection string 
+
+..
+
+
+
+so to perform the curd opperation in fastapi we have setup an connection between the 
+task.controller file => router file=> main file
+
+defien the fucntion into the controller file 
+def create_task(body:TaskSchema,db:Session):
+    data = body.model_dump()
+    newtask = TaskModel(title=data['title'],description=data['description'],is_completed=data['is_completed'])
+    db.add(newtask)
+    db.commit()
+    db.refresh(newtask)
+    return {"status":"success","data":newtask}
+
+def get_tasks(db:Session):
+    tasks = db.query(TaskModel).all()
+    return {"status":"success","data":tasks}
+
+def get_task_by_id(task_id:int,db:Session):
+    task = db.query(TaskModel).get(task_id)
+    return {"status":"success","data":task}
+
+
+def update_task(task_id:int, body:TaskSchema, db:Session):
+    one_task = db.query(TaskModel).get(task_id)
+    if not one_task:
+        return {"status":"failed","message":"Task not found"}
+    
+    one_task.title = body.title
+    one_task.description = body.description 
+    
+    one_task.is_completed = body.is_completed   
+    db.add(one_task)
+    db.commit()
+    db.refresh(one_task)
+    return {"status":"success","data":one_task}
+
+    like above for tasks such as update add get one 
+
+    and then route it correclty \
+
+
+
+
+    @task_router.post("/create")
+def create_task(body: TaskSchema,db = Depends(get_db)):
+    return controller.create_task(body,db) 
+
+
+@task_router.get("/all")
+def get_tasks(db = Depends(get_db)):
+    return controller.get_tasks(db)
+
+
+
+@task_router.get("/one/{task_id}")
+def get_task_by_id(task_id:int,db = Depends(get_db)):
+    one_task = db.query(controller.TaskModel).get(task_id)    
+    if not one_task:
+            raise HTTPException(status_code=400,detail="Task ID is required")
+    return {"status":"success","data":one_task}
+
+
+@task_router.put("/update/{task_id}")
+def update_task(task_id:int, body:TaskSchema, db = Depends(get_db)):
+    return controller.update_task(task_id,body,db)
+
+like this 
+
+
+http status code 
+for get request it 200
+for put update its 201
+for del its 204
+
+here add info about the response model is used in the code 
+class TaskResponseSchema(BaseModel):
+    id: int
+    title: str
+    description: str
+    is_completed: bool
+
+
+how this will befnints our codde privicy 
+@task_router.post("/create",response_model=TaskResponseSchema,status_code=status.HTTP_201_CREATED)
+def create_task(body: TaskSchema,db = Depends(get_db)):
+    return controller.create_task(body,db) 
